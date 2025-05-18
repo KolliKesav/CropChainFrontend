@@ -74,7 +74,7 @@ export default function LoginPage() {
               alert("Aadhaar number does not match.");
               return;
             }
-            login(walletAddress, selectedRole); // ✅ Fixed
+            login(walletAddress, selectedRole);
             navigate("/farmer");
           } else {
             alert("Farmer not registered on blockchain.");
@@ -95,7 +95,7 @@ export default function LoginPage() {
               alert("Aadhaar number does not match.");
               return;
             }
-            login(walletAddress, selectedRole); // ✅ Fixed
+            login(walletAddress, selectedRole); 
            navigate("/scientist");
             
           }else {

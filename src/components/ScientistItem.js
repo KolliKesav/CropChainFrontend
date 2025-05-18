@@ -14,7 +14,7 @@ import { useState } from "react";
 import { useWeb3Contract } from "react-moralis";
 import Upload from "../utils/Upload.json";
 import BN from "bn.js";
-import { EyeIcon, XMarkIcon } from "@heroicons/react/24/outline"; // <-- Eye Icon
+import { EyeIcon, XMarkIcon } from "@heroicons/react/24/outline"; 
 
 export function ScientistItem({ item }) {
   const [open, setOpen] = useState(false);
