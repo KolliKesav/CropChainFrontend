@@ -89,7 +89,7 @@ export default function UploadImage() {
 
         var hash = `https://gateway.pinata.cloud/ipfs/${resFile.data.IpfsHash}`;
         setImageHash(hash);
-
+        console.log(hash);
         var sol = "this is a plant and this has a disesase named x ";
         setSolution(sol);
         toast("file uploaded");

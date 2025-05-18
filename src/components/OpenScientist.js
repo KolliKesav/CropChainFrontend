@@ -6,6 +6,7 @@ import { useWeb3Contract } from "react-moralis";
 import Layout from "./Layout";
 import { ScientistItem } from "./ScientistItem";
 import Upload from "../utils/Upload.json";
+import Navbar from "./Navbar";
 
 export default function ScientistList() {
   const [sci, setSci] = useState("");
@@ -17,7 +18,7 @@ export default function ScientistList() {
   } = useWeb3Contract({
     abi: Upload.abi,
     contractAddress: process.env.REACT_APP_CONTRACT,
-    functionName: "get_scientits",
+    functionName: "get_scientists",
   });
 
   const fetchScientist = async () => {
@@ -34,7 +35,7 @@ export default function ScientistList() {
   const renderScientist = () => {
     return sci.map((item, i) => (
       <>
-        <div key={`a-${i}`} className="p-2">
+        <div key={`a-${i}`} className="p-2 flex items-center">
           <ScientistItem item={item} />
         </div>
       </>
@@ -42,9 +43,11 @@ export default function ScientistList() {
   };
 
   return (
+    <>
     <Layout>
-      <div className="mt-5px">
-        <div className="flex justify-center">
+      <Navbar />
+      <div className="mt-5px pt-24 overflow-x-hidden">
+        <div className="flex justify-center font-semibold">
           <Typography variant="h1">FETCH SCIENTIST </Typography>
         </div>
         <div className="px-10 pt-5 pb-10">
@@ -68,20 +71,21 @@ export default function ScientistList() {
         </Button>
 
         {/* <div className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96 mx-auto"> */}
-        <div className="flex">
-          <Card className=" mx-auto mt-8 mb-2 w-2/5 overflow-hidden rounded-md">
+        <div className="flex h-full overflow-y-auto">
+          <Card className=" mx-auto mt-8 mb-2 w-3/5  rounded-md">
             <List className="my-2 p-0">
               {isFetching ? (
-                <p>Loading...</p>
+                 <p className="col-span-full text-center text-gray-500">Loading...</p>
               ) : sci && sci.length > 0 ? (
                 renderScientist()
               ) : (
-                <p>No scientist fetched yet</p>
+                <p className="col-span-full text-center text-gray-500">No scientist fetched yet</p>
               )}
             </List>
           </Card>
         </div>
       </div>
     </Layout>
+    </>
   );
 }

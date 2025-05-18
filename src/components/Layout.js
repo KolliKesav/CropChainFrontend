@@ -14,10 +14,10 @@ export default function Layout({ children, headerType }) {
         <div className="flex flex-col min-h-screen w-full ">
           <div className="flex-grow"> {children}</div>
           <div className="pb-10 pt-5 px-5 ">
-            <Typography variant="h5" color="blue-bray">
-              Considering the Dapp hosted on the Test netowrk , dont pollute the
-              network will unnecessary interactions with the chain, use it for
-              legitemate purposes considering the cost to put the network up bu
+            <Typography variant="h6" >
+              Considering the Dapp hosted on the Test network , don't pollute the
+              network with unnecessary interactions with the chain, use it for
+              legitimate purposes considering the cost to put up the network by
               the community.
             </Typography>
           </div>

@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "./Layout";
-import { useState } from "react";
 import Upload from "../utils/Upload.json";
 import { useWeb3Contract } from "react-moralis";
 import console from "console-browserify";
 import { Button, Typography } from "@material-tailwind/react";
 import "react-toastify/dist/ReactToastify.css";
 import FinalCard from "./FinalCard";
+import Navbar from "./Navbar";
 
 export default function FinalImages() {
   const [img, setImg] = useState([]);
@@ -24,7 +24,7 @@ export default function FinalImages() {
   const fetchOpen = async () => {
     await fetch();
     if (isFetching) {
-      console.log("its fetching");
+      console.log("Fetching...");
     }
     if (data) {
       console.log(data);
@@ -33,51 +33,52 @@ export default function FinalImages() {
   };
 
   const renderImages = () => {
-    return img.map((item, i) => (
-      <>
-        <div key={`a-${i}`} className="p-2 md:p-4">
-          <FinalCard item={item} />
-        </div>
-      </>
-    ));
-  };
+     return img.map((item, i) => (
+       <>
+         <div key={`a-${i}`} className="p-2 md:p-4">
+           <FinalCard item={item} />
+         </div>
+       </>
+     ));
+   };
 
   return (
     <>
+      <Navbar />
       <Layout>
-        <div className="flex justify-center">
-          <Typography variant="h1" className="pb-5">
-            {" "}
-            Fetch The Images{" "}
+        <div className="flex justify-center pt-24">
+          <Typography variant="h1" className="pb-5 text-center">
+            Fetch The Images
           </Typography>
         </div>
-        <div className="px-10 pb-10 ">
+
+        <div className="px-10 pb-10 text-justify">
           <Typography variant="paragraph" color="blue-gray">
-            The images which are completed being reviewd by the ai , scientist
-            and some with the other reviewrs are shown here. WORK OF CAUTION-
-            please turst the solution where a minimum of 5 -6 users have
-            verified the image
+            The images which are completed being reviewed by AI, scientists, and
+            other reviewers are shown here. <strong>WORK OF CAUTION</strong> –
+            Please trust the solutions where a minimum of 5–6 users have verified
+            the image.
           </Typography>
         </div>
-        <div>
-          <Button
-            fullWidth
-            ripple={true}
-            onClick={fetchOpen}
-            className="mx-4 my-2"
-          >
-            {" "}
-            Fetch{" "}
+
+        <div className="px-6 pb-4">
+          <Button fullWidth ripple={true} onClick={fetchOpen} className="my-2">
+            Fetch
           </Button>
+        </div>
+
+        
           <div className=" h-[calc(100vh-3rem)] overflow-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1">
             {isFetching ? (
-              <p>Loading...</p>
+              <p className="col-span-full text-center text-gray-500">Loading...</p>
             ) : img && img.length > 0 ? (
               renderImages()
             ) : (
-              <p>No images fetched yet</p>
+              <p className="col-span-full text-center text-gray-500">
+                No images fetched yet
+              </p>
             )}
-          </div>
+          
         </div>
       </Layout>
     </>

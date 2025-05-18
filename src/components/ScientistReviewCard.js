@@ -1,16 +1,12 @@
 import {
   Dialog,
   Card,
-  CardHeader,
   CardBody,
   CardFooter,
   Typography,
   Button,
   DialogHeader,
   DialogBody,
-  DialogFooter,
-  Input,
-  Textarea,
 } from "@material-tailwind/react";
 import { useState, useEffect } from "react";
 import console from "console-browserify";
@@ -19,7 +15,7 @@ import Upload from "../utils/Upload.json";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 
-export default function CloseCard({ item }) {
+export default function ScientistReviewCard({ item }) {
   const [open, setOpen] = useState(false);
   const [choice, setChoice] = useState();
 
@@ -78,70 +74,55 @@ export default function CloseCard({ item }) {
   }, [choice]);
 
   return (
-    <Card className="w-full  max-w-3xl mx-auto shadow-md hover:shadow-lg transition-shadow duration-300">
-      <div color="blue-gray" className="relative h-48">
-        <img src={item} alt="card-image" className="h-full w-full object-cover rounded" />
+    <Card className="w-full max-w-3xl mx-auto shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg">
+      <div className="relative h-48 rounded-t-lg overflow-hidden">
+        <img src={item} alt="card-image" className="h-full w-full object-cover" />
       </div>
-      <CardBody></CardBody>
-      <CardFooter className="pt-0">
+      <CardBody className="py-2 px-6">
+        
+      </CardBody>
+      <CardFooter className="px-6 pb-6 pt-0">
         <Button onClick={handleOpen} variant="gradient" fullWidth>
           Read More
         </Button>
 
         <Dialog open={open} size="lg" handler={handleOpen}>
-  {data ? (
-    <div className="p-4">
-      <DialogHeader className="flex flex-col items-start">
-        <Typography variant="h6" color="blue-gray" className="mb-2">
-                 Owner:
+          {data ? (
+            <div className="p-4">
+              <DialogHeader className="flex flex-col items-start gap-1 border-b pb-2">
+                <Typography variant="h5" color="blue-gray">
+                  Owner: {data.owner}
                 </Typography>
-                <Typography variant="paragraph" className="bg-gray-100 p-3 rounded">
-                  {data.owner}
-                </Typography>
-      </DialogHeader>
+              </DialogHeader>
 
-      <DialogBody className="grid gap-6 max-h-[70vh] overflow-y-auto">
-        <img
-          src={item}
-          className="w-full h-64 object-cover rounded-lg shadow"
-          alt="card-image"
-        />
+              <DialogBody className="grid gap-6 max-h-[70vh] overflow-y-auto mt-4">
+                <img
+                  src={item}
+                  className="w-full h-64 object-cover rounded-lg shadow-md"
+                  alt="card-image"
+                />
 
-        <div className="space-y-2">
-          <Typography variant="h6" color="blue-gray">
-            AI Diagnosis:
-          </Typography>
-          <Typography color="blue-gray">{data.AI_sol}</Typography>
+                <div className="space-y-4">
+                  <div>
+                    <Typography variant="h6" color="blue-gray">
+                      AI Diagnosis:
+                    </Typography>
+                    <Typography color="gray">{data.AI_sol}</Typography>
+                  </div>
 
-          <Typography variant="h6" color="blue-gray">
-            Scientist Review:
-          </Typography>
-          <Typography color="blue-gray">{data.reviewer_sol}</Typography>
-        </div>
-      </DialogBody>
-
-      <DialogFooter className="flex justify-end gap-4">
-        <Button
-          variant="outlined"
-          color="green"
-          onClick={() => handleVote(true)}
-        >
-          OK
-        </Button>
-        <Button
-          variant="outlined"
-          color="red"
-          onClick={() => handleVote(false)}
-        >
-          Not OK
-        </Button>
-      </DialogFooter>
-    </div>
-  ) : (
-    <div className="p-4 text-center">Loading...</div>
-  )}
-</Dialog>
-
+                  <div>
+                    <Typography variant="h6" color="blue-gray">
+                      Your Review:
+                    </Typography>
+                    <Typography color="gray">{data.reviewer_sol}</Typography>
+                  </div>
+                </div>
+              </DialogBody>
+            </div>
+          ) : (
+            <div className="p-4 text-center text-gray-600">Loading...</div>
+          )}
+        </Dialog>
       </CardFooter>
       <ToastContainer />
     </Card>

@@ -6,6 +6,7 @@ import Upload from "../utils/Upload.json";
 import { useWeb3Contract } from "react-moralis";
 import console from "console-browserify";
 import { useState } from "react";
+import Navbar from "./Navbar";
 
 export default function CloseImages() {
   const [img, setImg] = useState([]);
@@ -27,7 +28,7 @@ export default function CloseImages() {
   } = useWeb3Contract({
     abi: Upload.abi,
     contractAddress: process.env.REACT_APP_CONTRACT,
-    functionName: "get_final_images",
+    functionName: "get_close_images",
   });
 
   const fetchFinal = async () => {
@@ -43,11 +44,13 @@ export default function CloseImages() {
 
   return (
     <>
-      <Layout>
-        <div className="flex justify-center">
+    <Navbar/>
+      <Layout >
+       <div className="overflow-x-hidden">
+        <div className="flex justify-center pt-24 ">
           <Typography variant="h1" className="pb-5">
             {" "}
-            See Images{" "}
+            Fetch All Close Images{" "}
           </Typography>
         </div>
         <div className="px-10 pb-10 ">
@@ -72,13 +75,14 @@ export default function CloseImages() {
 
           <div className=" h-[calc(100vh-3rem)] overflow-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1">
             {isFetching ? (
-              <p>Loading...</p>
+              <p className="col-span-full text-center text-gray-500">Loading...</p>
             ) : img && img.length > 0 ? (
               renderImages()
             ) : (
-              <p>No images fetched yet</p>
+              <p className="col-span-full text-center text-gray-500">No images fetched yet</p>
             )}
           </div>
+        </div>
         </div>
       </Layout>
     </>

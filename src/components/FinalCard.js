@@ -51,60 +51,76 @@ export default function FinalCard({ item }) {
   };
 
   return (
-    <Card className="mt-6 w-96">
-      <CardHeader color="blue-gray" className="relative h-56">
-        <img src={item} alt={`Image `} />
-      </CardHeader>
-      <CardBody></CardBody>
-      <CardFooter className="pt-0">
-        <Button onClick={handleOpen} variant="gradient">
+    <Card className="w-full max-w-3xl mx-auto shadow-md hover:shadow-lg transition-shadow duration-300 ">
+      <div color="blue-gray" className="h-44">
+        <img src={item} alt={`Image `} className=" w-full h-full object-cover rounded " />
+      </div>
+     
+      <CardFooter className="pt-5">
+        <Button onClick={handleOpen} variant="gradient" fullWidth>
           Open
         </Button>
 
-        <Dialog open={open} size="md" handler={handleOpen}>
+     <Dialog open={open} handler={handleOpen} size="xl" className="overflow-y-auto">
+  <Card className="max-h-[90vh] overflow-hidden">
+    {/* Header */}
+    <DialogHeader className="bg-blue-200 text-gray-800">
+      Image Details
+    </DialogHeader>
+
+    {/* Scrollable Body */}
+    <DialogBody className="overflow-y-auto max-h-[70vh] p-6">
+      <div className="flex flex-col md:flex-row gap-6">
+        {/* Left: Image (Fixed Height) */}
+        <div className="w-full md:w-1/2 flex justify-center items-start">
+          <img
+            src={item}
+            alt="Uploaded"
+            className="max-h-[400px] w-auto object-contain border border-gray-300 shadow"
+          />
+        </div>
+
+        {/* Right: Details */}
+        <div className="w-full md:w-1/2 overflow-y-auto">
           {data ? (
             <>
-              {" "}
-              <div className="flex items-center justify-between">
-                <DialogHeader className="flex flex-col items-start">
-                  {" "}
-                  <Typography className="mb-1" variant="h4">
-                    <p> {data.owner} </p>
-                  </Typography>
-                </DialogHeader>
-              </div>
-              <DialogBody>
-                <img
-                  src={item}
-                  className="h-50 w-full object-cover object-center"
-                  alt="card-image"
-                />
+              <p className=" font-bold">Owner Address:</p>
+              <p className="mb-4 break-words text-gray-700">{data.owner}</p>
 
-                <Typography className="-mb-1" color="blue-gray">
-                  <p>AI Solution:{data.AI_sol}</p> <br />
-                  <p>Reviewer sol:{data.reviewer_sol} </p>
-                  <p>reviewer:{data.reviewer}</p>
-                </Typography>
-                <Typography className="-mb-1" color="blue-gray">
-                  <p>
-                    Verification_Count:
-                    {hexToDec(data.verificationCount?._hex)}{" "}
-                  </p>{" "}
-                  <br />
-                  <p>OK:{hexToDec(data.true_count?._hex)}</p> <br />
-                  <p>NOT OK:{hexToDec(data.false_count?._hex)}</p>
-                </Typography>
-              </DialogBody>
-              <DialogFooter className="space-x-2">
-                <Button variant="text" color="gray" onClick={handleOpen}>
-                  close
-                </Button>
-              </DialogFooter>{" "}
+              <p className=" font-bold">Stats:</p>
+              <div className="text-gray-700 mb-2">
+                <p ><strong className="font-bold">AI Solution:</strong> {data.AI_sol}</p>
+                <p><strong className="font-bold">Reviewer Solution:</strong> {data.reviewer_sol}</p>
+                <p><strong className="font-bold">Reviewer:</strong> {data.reviewer}</p>
+                <p><strong className="font-bold">Verification Count:</strong> {hexToDec(data.verificationCount?._hex)}</p>
+                <p><strong className="font-bold">OK:</strong> {hexToDec(data.true_count?._hex)}</p>
+                <p><strong className="font-bold">NOT OK:</strong> {hexToDec(data.false_count?._hex)}</p>
+              </div>
+
+              <p className=" font-bold mt-4">Verified Image URL:</p>
+              <p className="text-gray-700 break-words">{item}</p>
             </>
           ) : (
-            <p>Loading...</p>
+            <div className="text-center text-gray-500">Loading...</div>
           )}
-        </Dialog>
+        </div>
+      </div>
+    </DialogBody>
+
+    {/* Footer */}
+    <DialogFooter className="justify-end">
+      <Button variant="outlined" color="blue-gray" onClick={handleOpen}>
+        Close
+      </Button>
+    </DialogFooter>
+  </Card>
+</Dialog>
+
+
+
+
+
+
       </CardFooter>
       <ToastContainer />
     </Card>

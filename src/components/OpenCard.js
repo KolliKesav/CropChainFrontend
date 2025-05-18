@@ -9,29 +9,27 @@ import {
   DialogHeader,
   DialogBody,
   DialogFooter,
-  Input,
   Textarea,
 } from "@material-tailwind/react";
 import { useState } from "react";
 import console from "console-browserify";
-import { useWeb3Contract, useMoralis } from "react-moralis";
+import { useWeb3Contract } from "react-moralis";
 import Upload from "../utils/Upload.json";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
+import { useUser } from "../context/UserContext";
 
 export default function OpenCard({ item }) {
+  const { role } = useUser();
   const [open, setOpen] = useState(false);
-  const [url, setUrl] = useState("");
-  const [output, setOutput] = useState("");
-
   const [solution, setSolution] = useState("");
+  const [output, setOutput] = useState(null);
 
   const { runContractFunction: updateSolution } = useWeb3Contract({
     abi: Upload.abi,
     contractAddress: process.env.REACT_APP_CONTRACT,
     functionName: "review_image",
     params: {
-      //_user: address,
       _url: item,
       _solution: solution,
     },
@@ -41,91 +39,117 @@ export default function OpenCard({ item }) {
     abi: Upload.abi,
     contractAddress: process.env.REACT_APP_CONTRACT,
     functionName: "display_open_output",
-    params: {
-      _url: item,
-    },
+    params: { _url: item },
   });
 
-  const handleButtonClick = async () => {
-    await fetch();
-    console.log("Fetching in process ");
-    if (data) {
-      console.log(data);
-    }
-  };
-
   const handleOpen = async () => {
-    handleButtonClick();
+    await fetch();
     setOpen(!open);
   };
 
   const handleSubmit = async () => {
     await updateSolution({
       onSuccess: (tx) => handleSetOnSuccess(tx),
-      onError: (error) => console.log(error),
+      onError: (error) => {
+        console.error(error);
+        toast.error("Submission failed!");
+      },
     });
   };
 
   async function handleSetOnSuccess(tx) {
     await tx.wait(1);
-    toast("Solution updated");
+    toast.success("Solution updated successfully!");
+    setSolution("");
+    setOpen(false);
   }
 
   return (
-    <Card className="mt-6 w-96">
-      <CardHeader color="blue-gray" className="relative h-56">
-        <img src={item} alt={`Image `} />
-      </CardHeader>
-      <CardBody></CardBody>
-      <CardFooter className="pt-0">
-        <Button onClick={handleOpen} variant="gradient">
-          Read More
-        </Button>
+    <>
+      <Card className="w-full max-w-3xl mx-auto shadow-md hover:shadow-lg transition-shadow duration-300">
 
-        <Dialog open={open} size="md" handler={handleOpen}>
-          {data ? (
-            <>
-              {" "}
-              <div className="flex items-center justify-between">
-                <DialogHeader className="flex flex-col items-start">
-                  {" "}
-                  <Typography className="mb-1" variant="h4">
-                    <p> {data.owner} </p>
-                  </Typography>
-                </DialogHeader>
+        <CardHeader floated={false} className="h-48">
+          <img
+            src={item}
+            alt="Uploaded"
+            className="h-full w-full object-cover rounded"
+          />
+        </CardHeader>
+        
+        <CardFooter className="flex justify-center">
+          
+          {role === "Scientist" && (
+          <Button onClick={handleOpen} variant="gradient" fullWidth>
+            Review
+          </Button>)}
+        </CardFooter>
+      </Card>
+
+      <Dialog
+        open={open}
+        size="lg"
+        handler={handleOpen}
+        className="max-h-[90vh] overflow-y-auto"
+      >
+        {data ? (
+          <>
+            <DialogHeader>
+              <div>
+                <Typography variant="h6" color="blue-gray" className="mb-2">
+                 Owner:
+                </Typography>
+                <Typography variant="paragraph" className="bg-gray-100 p-3 rounded">
+                  {data.owner}
+                </Typography>
+              
               </div>
-              <DialogBody>
-                <img
-                  src={item}
-                  className="h-50 w-full object-cover object-center"
-                  alt="card-image"
+            </DialogHeader>
+            <DialogBody className="space-y-4">
+              <img
+                src={item}
+                alt="Image"
+                className="w-full max-h-[300px] object-cover rounded-lg border"
+              />
+              <div>
+                <Typography variant="h6" color="blue-gray" className="mb-2">
+                  AI Suggested Solution:
+                </Typography>
+                <Typography variant="paragraph" className="bg-gray-100 p-3 rounded">
+                  {data.AI_sol}
+                </Typography>
+              </div>
+              <div>
+                <Typography variant="h6" color="blue-gray" className="mb-2">
+                  Your Solution:
+                </Typography>
+                <Textarea
+                  label="Enter your solution"
+                  value={solution}
+                  onChange={(e) => setSolution(e.target.value)}
+                  rows={4}
+                  className="bg-white"
                 />
-                <div className="grid gap-6">
-                  <Typography className="-mb-1" color="blue-gray" variant="h6">
-                    <p> {data.AI_sol}</p>
-                  </Typography>
-                  <Textarea
-                    label="Solution"
-                    onChange={(e) => setSolution(e.target.value)}
-                    value={solution}
-                  />
-                </div>
-              </DialogBody>
-              <DialogFooter className="space-x-2">
-                <Button variant="text" color="gray" onClick={handleOpen}>
-                  cancel
-                </Button>
-                <Button variant="gradient" color="gray" onClick={handleSubmit}>
-                  send message
-                </Button>
-              </DialogFooter>{" "}
-            </>
-          ) : (
-            <p>Loading...</p>
-          )}
-        </Dialog>
-      </CardFooter>
-      <ToastContainer />
-    </Card>
+              </div>
+            </DialogBody>
+            <DialogFooter className="justify-end space-x-2">
+              <Button variant="text" color="gray" onClick={handleOpen}>
+                Cancel
+              </Button>
+              <Button variant="gradient" color="blue" onClick={handleSubmit}>
+                Submit
+              </Button>
+            </DialogFooter>
+          </>
+        ) : (
+          <DialogBody className="flex justify-center items-center h-48">
+            <Typography variant="h5" color="gray">
+              Loading...
+            </Typography>
+          </DialogBody>
+        )}
+      </Dialog>
+
+      <ToastContainer position="bottom-right" autoClose={3000} />
+    </>
   );
 }

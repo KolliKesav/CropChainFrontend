@@ -6,6 +6,7 @@ import { FarmerItem } from "./FarmerItem";
 import Upload from "../utils/Upload.json";
 import console from "console-browserify";
 import { useWeb3Contract } from "react-moralis";
+import Navbar from "./Navbar";
 
 export default function FarmerList() {
   const [far, setFar] = useState("");
@@ -13,7 +14,7 @@ export default function FarmerList() {
   const renderFarmers = () => {
     return far.map((item, i) => (
       <>
-        <div key={`a-${i}`} className="p-2">
+        <div key={`a-${i}`} className="p-2 flex items-center">
           <FarmerItem item={item} />
         </div>
       </>
@@ -42,9 +43,11 @@ export default function FarmerList() {
   };
 
   return (
+    <>
+    <Navbar/>
     <Layout>
-      <div>
-        <div className="flex justify-center">
+      <div className="overflow-x-hidden">
+        <div className="flex justify-center pt-24 ">
           <Typography variant="h1" className="pb-10">
             Fetch the Farmers
           </Typography>
@@ -68,20 +71,21 @@ export default function FarmerList() {
           Fetch{" "}
         </Button>
 
-        <div className="flex">
-          <Card className="mx-auto mt-8 mb-2 w-1/2 overflow-hidden rounded-md">
+        <div className="flex h-full overflow-y-auto">
+          <Card className="mx-auto mt-8 mb-2 w-3/5  rounded-md">
             <List className="my-2 p-0">
               {isFetching ? (
-                <p>Loading...</p>
+                <p className="col-span-full text-center text-gray-500">Loading...</p>
               ) : far && far.length > 0 ? (
                 renderFarmers()
               ) : (
-                <p>No farmers fetched yet</p>
+               <p className="col-span-full text-center text-gray-500"> No farmers fetched yet</p>
               )}
             </List>
           </Card>
         </div>
       </div>
     </Layout>
+    </>
   );
 }

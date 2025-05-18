@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
 import HomePage from "./pages/HomePage";
 import KvkManager from "./pages/KvkManager";
 import Farmer from "./pages/Farmer";
@@ -15,6 +16,11 @@ import FinalImages from "./components/FinalImages";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import console from "console-browserify";
+import Profile from "./pages/profile";
+import { UserProvider } from "./context/UserContext";
+import AuthRedirect from "./components/AuthRedirect";
+import ScrollToTop from "./components/ScrollToTop";
+
 
 function App() {
   // useEffect(() => {
@@ -81,9 +87,12 @@ function App() {
   return (
     <div className="App">
       <MoralisProvider initializeOnMount={false}>
+        <UserProvider>
         <Router>
+           <ScrollToTop />
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/home" element={<HomePage />} />
+            
             <Route path="/kvkmanager" element={<KvkManager />} />
             <Route path="/farmer" element={<Farmer />} />
             <Route path="/scientist" element={<Scientist />} />
@@ -94,9 +103,13 @@ function App() {
             <Route path="/closeimages" element={<CloseImages />} />
             <Route path="/kvkmanager/scientist" element={<ScientistList />} />
             <Route path="/kvkmanager/farmer" element={<FarmerList />} />
+            <Route path="/profile" element ={<Profile />}/>
+            <Route path="/" element={<AuthRedirect />} />
+            <Route path="/login" element={<Login />} />
+
           </Routes>
         </Router>
-
+         </UserProvider>
         <ToastContainer />
       </MoralisProvider>
     </div>

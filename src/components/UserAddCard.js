@@ -31,7 +31,7 @@ export function UserAddCard({ data }) {
         <Typography color="white">{data.discription}</Typography>
       </CardBody>
       <CardFooter className="pt-0">
-        <a href="#" className="inline-block">
+        
           <Button size="sm" color="white" className="flex items-center gap-2">
             <Link to={data.link}> {data.user} </Link>
 
@@ -50,7 +50,7 @@ export function UserAddCard({ data }) {
               />
             </svg>
           </Button>
-        </a>
+       
       </CardFooter>
     </Card>
   );

@@ -1,147 +1,251 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import UploadImage from "../components/UploadImage";
-import { Typography, Button } from "@material-tailwind/react";
-import { EllipsisVerticalIcon, ArrowUpIcon } from "@heroicons/react/24/outline";
-import { CheckCircleIcon, ClockIcon } from "@heroicons/react/24/solid";
+import { Typography, Button, ButtonGroup } from "@material-tailwind/react";
+import { ClockIcon } from "@heroicons/react/24/solid";
 import StatisticsCard from "../components/StatisticsCard";
 import StatisticsChart from "../components/StatisticsChart";
 import { statisticsCardsData } from "../utils/statisticsCardsData";
 import { statisticsChartsData } from "../utils/statisticsChartsData";
 import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import { useUser } from "../context/UserContext";
+import { useWeb3Contract } from "react-moralis";
+import Upload from "../utils/Upload.json";
+import ScientistReviewCard from "../components/ScientistReviewCard";
+import { CardSkeleton } from "../components/CardSkeleton";
+import FinalCard from "../components/FinalCard";
+
 
 export default function Scientist() {
-  return (
-    <div>
-      <Layout headerType="scientist">
-        <div className="px-10 pt-5 ">
-          <Typography variant="small" color="blue-gray">
-            the graphs and the statistical data menthioned here is only for the
-            ideation purpose , doesnot intend to the true values of the On Chain
-            data, for which pipe line will be created in the next verion.
-          </Typography>
-        </div>
-        <div className="mt-5 mb-5">
-          <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
-            {statisticsCardsData.map(({ icon, title, footer, ...rest }) => (
-              <StatisticsCard
-                key={title}
-                {...rest}
-                title={title}
-                icon={React.createElement(icon, {
-                  className: "w-6 h-6 text-white",
-                })}
-                footer={
-                  <Typography className="font-normal text-blue-gray-600">
-                    <strong className={footer.color}>{footer.value}</strong>
-                    &nbsp;{footer.label}
-                  </Typography>
-                }
-              />
-            ))}
-          </div>
-          <div className="mb-6 grid grid-cols-1 gap-y-12 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
-            {statisticsChartsData.map((props) => (
-              <StatisticsChart
-                key={props.title}
-                {...props}
-                footer={
-                  <Typography
-                    variant="small"
-                    className="flex items-center font-normal text-blue-gray-600"
-                  >
-                    <ClockIcon
-                      strokeWidth={2}
-                      className="h-4 w-4 text-blue-gray-400"
-                    />
-                    &nbsp;{props.footer}
-                  </Typography>
-                }
-              />
-            ))}
-          </div>
-        </div>
+  const [meth, setMeth] = useState("");
+  const [img, setImg] = useState([]);
+  const { walletAddress } = useUser();
 
-        <div className="flex justify-center">
-          <Typography variant="h1" className="my-5px">
-            Review Images
-          </Typography>
-        </div>
-        <div className="px-10 pt-10">
-          <Typography variant="paragraph" color="blue-gray">
-            The Farmer uploads the images , which are first seen by the AI and a
-            Solution is proposed by it, then the images fall in close images
-            section where the scientist need to verify that solution provided by
-            the AI. For Reviewing every image the scients gets some authority
-            points, If that solution is found to be wrong in the further steps
-            of the verifiaction process , an additional authority points will be
-            deducted.
-          </Typography>
-          <div className="flex justify-center pt-4 pb-10">
-            <Link to="../openimages">
-              <Button variant="outlined" className="flex items-center gap-2">
-                Review
-                <svg
+  const { runContractFunction: fetch, data } = useWeb3Contract({
+    abi: Upload.abi,
+    contractAddress: process.env.REACT_APP_CONTRACT,
+    functionName: "display_scientist",
+    params: { _user: walletAddress },
+  });
+
+  const fetchImg = async () => {
+    await fetch();
+    if (data) {
+      if (meth === "verified") {
+        setImg(data.image_VR);
+      } else if (meth === "reviewed") {
+        setImg(data.image_rvd);
+      }
+    }
+  };
+
+  const renderImages = () => {
+  if (meth === "verified") {
+    return img.map((item, i) => (
+      <div key={`img-${i}`} className="p-2 md:p-4">
+        <FinalCard item={item} />
+      </div>
+    ));
+  } else if (meth === "reviewed") {
+    return img.map((item, i) => (
+      <div key={`img-${i}`} className="p-2 md:p-4">
+        <ScientistReviewCard item={item} />
+      </div>
+    ));
+  } else {
+    return null; // fallback if meth doesn't match
+  }
+};
+
+
+  return (
+    <div className="">
+      <Navbar />
+      <Layout headerType="scientist" className="">
+        <section
+          className={`pt-20 pb-10  ${
+            walletAddress ? " px-6 md:px-8" : "px-4"
+          } bg-gradient-to-br from-blue-50 to-green-50`}
+        >
+        <div className="bg-gradient-to-r from-green-100 via-blue-100 to-teal-100 rounded-xl p-4 shadow-md mb-6">
+  <h1 className="text-gray-700 text-3xl font-extrabold tracking-wide uppercase text-center ">
+    🚀 Dashboard
+  </h1>
+</div>
+          
+
+          {/* Stats Cards */}
+          <div className="bg-white rounded-xl shadow-md max-w-6xl mx-auto my-10 p-6">
+            
+            <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
+              {statisticsCardsData.map(({ icon, title, footer, ...rest }) => (
+                <StatisticsCard
+                  key={title}
+                  {...rest}
+                  title={title}
+                  icon={React.createElement(icon, {
+                    className: "w-6 h-6 text-white",
+                  })}
+                  footer={
+                    <Typography className="font-normal text-blue-gray-600">
+                      <strong className={footer.color}>{footer.value}</strong>
+                      &nbsp;{footer.label}
+                    </Typography>
+                  }
+                />
+              ))}
+            </div>
+
+            <div className="mb-6 grid grid-cols-1 gap-y-12 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
+              {statisticsChartsData.map((props) => (
+                <StatisticsChart
+                  key={props.title}
+                  {...props}
+                  footer={
+                    <Typography
+                      variant="small"
+                      className="flex items-center font-normal text-blue-gray-600"
+                    >
+                      <ClockIcon className="h-4 w-4 text-blue-gray-400" />
+                      &nbsp;{props.footer}
+                    </Typography>
+                  }
+                />
+              ))}
+            </div>
+
+            <div className="text-center">
+              <Typography variant="paragraph" color="blue-gray">
+                The graphs and data shown here are for ideation only and not
+                actual on-chain values. A pipeline for real-time data will be
+                included in the next version.
+              </Typography>
+            </div>
+
+          </div>
+
+          {/* Review Instructions */}
+          <div className="bg-white rounded-xl shadow-md max-w-6xl mx-auto my-10 p-6">
+            <div className="text-center mb-6">
+              <Typography variant="h2" className="text-3xl font-semibold">
+                Review Images
+              </Typography>
+            </div>
+            <Typography variant="paragraph" color="blue-gray">
+              The AI proposes a solution which you need to verify. You earn
+              authority points for each image reviewed. If your review is later
+              found incorrect, points will be deducted.
+            </Typography>
+            <div className="flex justify-center pt-4 pb-6">
+              <Link to="../openimages">
+                <Button variant="outlined" className="flex items-center gap-2">
+                  Review
+                  <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={2}
                   stroke="currentColor"
                   className="h-5 w-5"
-                >
-                  <path
+                ><path
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
-                  />
-                </svg>
-              </Button>
-            </Link>
+                  /></svg>
+                </Button>
+              </Link>
+            </div>
           </div>
-        </div>
-        <div className="flex justify-center">
-          <Typography variant="h1" className="my-5px">
-            Upload the Image
-          </Typography>
-        </div>
-        <div className="px-10 pt-10 ">
-          <Typography variant="paragraph" color="blue-gray">
-            {" "}
-            Please upload your image to the chain by using the this stepper form
-            , please follow the flow step by step any misplacement of the steps
-            leads to the rejection of you transaction request to the chain you
-            will get notified by the notifications on each step of the process
-            which tell you that the step is successfully executed, some of them
-            take time to be executed successfully so please be patient and
-            follow the instructions. Make sure to have enough Test ETH in your
-            metamask account.Else go to{" "}
-            <a
-              className="text-blue-600 "
-              target="_blank"
-              href="https://www.alchemy.com/faucets/ethereum-sepolia"
-            >
-              https://www.alchemy.com/faucets/ethereum-sepolia
-            </a>{" "}
-            to get the required test eth{" "}
-          </Typography>
-        </div>
-        <UploadImage />
-        <div className="px-10 pb-10 ">
-          <Typography variant="paragraph" color="blue-gray">
-            For storing of images in Decentralised space IPFS is being used.
-            Which in some cases might take some time to upload your file and
-            some times it may fail, so if the image upload is not getting
-            success responce then please take some time and the retry later.To
-            want to know more about the Descentralised storage space refer to{" "}
-            <a
-              className="text-blue-600"
-              target="_blank"
-              href="https://ipfs.tech/"
-            >
-              https://ipfs.tech/
-            </a>
-          </Typography>
-        </div>
+
+          {/* Verify Instructions */}
+          <div className="bg-white rounded-xl shadow-md max-w-6xl mx-auto my-10 p-6">
+            <div className="text-center mb-6">
+              <Typography variant="h2" className="text-3xl font-semibold">
+                Verify Images
+              </Typography>
+            </div>
+            <Typography variant="paragraph" color="blue-gray">
+              After review, images are verified by a group. Only if 5 verifiers
+              approve, it gets added to the final section. Verifiers also earn
+              authority points.
+            </Typography>
+            <div className="flex justify-center pt-4 pb-6">
+              <Link to="../closeimages">
+                <Button variant="outlined" className="flex items-center gap-2">
+                  Verify
+                  <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="h-5 w-5"
+                ><path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+                  /></svg>
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          {/* Fetch Images */}
+          <div className="bg-white rounded-xl shadow-md max-w-6xl mx-auto my-10 p-6">
+            <div className="text-center mb-6">
+              <Typography variant="h2" className="text-3xl font-semibold">
+                Fetch Your Images
+              </Typography>
+              <Typography
+                variant="paragraph"
+                color="blue-gray"
+                className="text-center max-w-3xl mx-auto mb-10"
+              >
+                Click the respective buttons to fetch the images you have
+                reviewed or verified.
+              </Typography>
+            </div>
+
+            <div className="flex justify-center mb-10">
+              <ButtonGroup fullWidth variant="outlined">
+                <Button
+                  onClick={() => {
+                    setMeth("verified");
+                    fetchImg();
+                  }}
+                >
+                  Verified
+                </Button>
+                <Button
+                  onClick={() => {
+                    setMeth("reviewed");
+                    fetchImg();
+                  }}
+                >
+                  Reviewed
+                </Button>
+              </ButtonGroup>
+            </div>
+
+            <div className="min-h-[300px]">
+              {img && img.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {renderImages()}
+                </div>
+              ) : (
+                <div className="text-center">
+                  <Typography>No images fetched yet</Typography>
+                  <div className="flex justify-center gap-6 mt-6">
+                    <CardSkeleton />
+                    <CardSkeleton />
+                    <CardSkeleton />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
       </Layout>
     </div>
   );

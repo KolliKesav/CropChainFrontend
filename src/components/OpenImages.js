@@ -8,9 +8,12 @@ import { useWeb3Contract } from "react-moralis";
 import console from "console-browserify";
 import { Button, Typography } from "@material-tailwind/react";
 import "react-toastify/dist/ReactToastify.css";
+import Navbar from "./Navbar";
 
 export default function OpenImages() {
   const [img, setImg] = useState([]);
+
+  
 
   const {
     runContractFunction: fetch,
@@ -45,12 +48,13 @@ export default function OpenImages() {
 
   return (
     <>
+    <Navbar />
       <Layout>
-        <div>
-          <div className="flex justify-center">
+        <div className="overflow-x-hidden">
+          <div className="flex justify-center pt-24">
             <Typography variant="h1" className="pb-5">
               {" "}
-              Fetch you Images{" "}
+              Fetch All Open Images{" "}
             </Typography>
           </div>
 
@@ -74,11 +78,11 @@ export default function OpenImages() {
           </Button>
           <div className=" h-[calc(100vh-3rem)] overflow-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1">
             {isFetching ? (
-              <p>Loading...</p>
+             <p className="col-span-full text-center text-gray-500">Loading...</p>
             ) : img && img.length > 0 ? (
               renderImages()
             ) : (
-              <Typography variant="h4">No images fetched </Typography>
+               <p className="col-span-full text-center text-gray-500">No images fetched </p>
             )}
           </div>
         </div>

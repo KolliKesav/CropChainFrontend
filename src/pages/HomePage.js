@@ -6,13 +6,21 @@ import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 import About from "../components/About";
 import { TimeLine } from "../components/TimeLine";
+import { MultiLevelSidebar } from "../components/MultiLevelSidebar";
+import { useUser } from "../context/UserContext"; // assuming this gives you role/info
 
 export default function HomePage() {
-  return (
-    <div>
-      <Navbar />
+  const { role } = useUser(); // fetch role from context
 
-      <main>
+  return (
+    <div className=" bg-gray-50 min-h-screen overflow-x-hidden flex">
+      {/* Conditionally show sidebar */}
+      <div className="fixed">{role && <MultiLevelSidebar />}</div>
+
+      {/* Main content - add ml-64 only if sidebar is shown */}
+      <div><main className={`${role ? "ml-56" : ""}`}>
+        <Navbar />
+
         <div id="home">
           <Home />
         </div>
@@ -32,9 +40,10 @@ export default function HomePage() {
         <div id="contact">
           <Contact />
         </div>
-      </main>
 
-      <Footer />
+        <Footer />
+      </main>
+      </div>
     </div>
   );
 }
