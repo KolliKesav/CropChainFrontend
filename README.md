@@ -1,9 +1,9 @@
-
+![Screenshot 2025-05-19 133522](https://github.com/user-attachments/assets/a1e179d4-db24-4474-a471-ec0ad7583e34)
 # CROP-CHAIN
 
 Decentralised Pland Disesase detection and solution verification system.This repo has the front-end code of the project. This is a research project. Technologies include Hardhat, Ipfs, web3 , moralis and Ethereum smart contract development using solidity.This uses PROOF OF AUTHORITY as its consensus mechanism.This is a permissioned chain so the admin aka KvkManager is the who can give access to the chain, who the deployer of the smart contract.
 
-Actors Include KvkManager, Farmers and Scientist. The manager includes the farmers and Scientist to the chain. Farmers upload the images. which are first viewed by the Ai and are then reviewed by the Scientists and at last all the verifiers vote the soluions provided.By this way they come to a decision of correct solution for a given plant diesase.
+Actors Include KvkManager, Farmers and Scientist. The manager includes the farmers and Scientist to the chain. Farmers upload the images. which are first viewed by the Ai and are then reviewed by the Scientists and at last all the verifiers vote to veridy the correctness of the soluions provided.By this way they arrive at a decision of correct solution for a given plant diesase.
 
 # PROJECT ARCHITECTURE
 ![Screenshot from 2024-03-31 12-30-30](https://github.com/Adhitya-Vardhan/CropChain-UI/assets/116478666/3aa45eef-2468-437c-9a37-dd9f2b3e061c)
@@ -24,6 +24,9 @@ Etherscan Testnet->[https://sepolia.etherscan.io/tx/0x040fea4b8a199911d5639d0422
 
 
 ## UI
+
+Login page:
+![Screenshot 2025-05-19 133522](https://github.com/user-attachments/assets/abf54fb5-cae4-4303-88ed-2b3aaf4901ab)
 
 Home page: 
 ![Screenshot from 2024-05-19 15-16-08](https://github.com/Adhitya-Vardhan/CropChain-UI/assets/116478666/345bf3eb-1fe1-4921-8b52-c8f329aa1f6c)
