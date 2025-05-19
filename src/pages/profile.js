@@ -146,9 +146,9 @@ export default function Profile() {
 
                         <div className="mt-4">
                           <strong>Reviewed Images:</strong>
-                          <ul className="flex flex-wrap gap-4 mt-2">
+                          <ul className="flex flex-wrap gap-8 mt-3">
                             {profileData.image_rvd?.map((img, i) => (
-                              <li key={i} className="w-32 h-32 overflow-hidden rounded shadow">
+                              <li key={i} className="w-40 h-40 overflow-hidden rounded shadow">
                                 <img src={img} alt={`Reviewed ${i}`} className="object-cover w-full h-full" />
                               </li>
                             ))}
@@ -157,9 +157,9 @@ export default function Profile() {
 
                         <div className="mt-4">
                           <strong>Verified Images:</strong>
-                          <ul className="flex flex-wrap gap-4 mt-2">
+                          <ul className="flex flex-wrap gap-8 mt-3">
                             {profileData.image_VR?.map((img, i) => (
-                              <li key={i} className="w-32 h-32 overflow-hidden rounded shadow">
+                              <li key={i} className="w-40 h-40 overflow-hidden rounded shadow">
                                 <img src={img} alt={`Verified ${i}`} className="object-cover w-full h-full" />
                               </li>
                             ))}

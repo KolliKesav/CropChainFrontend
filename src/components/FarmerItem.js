@@ -72,7 +72,7 @@ export function FarmerItem({ item }) {
         </Button>
       </ListItem>
 
-      <Dialog open={open} handler={handleOpen} size="lg" className="p-4">
+      <Dialog open={open} handler={handleOpen} size="lg" className="p-3">
         <Card className="w-full">
           <CardHeader
             floated={false}

@@ -55,11 +55,11 @@ export default function CloseImages() {
         </div>
         <div className="px-10 pb-10 ">
           <Typography variant="paragraph" color="blue-gray">
-            The images uploaded by the farmer are classified in to 3 groups i.e
-            OPEN , CLOSE and FINAL. THe image which is just reviewed by the ai
-            will be in the opne image section. and the ones which are reviewd by
-            scientists will be in CloseImage section now here we need to vote
-            for the choice ok or not ok with the image
+            The images uploaded by the farmer are classified into 3 groups i.e
+            OPEN , CLOSE and FINAL. The image which is just reviewed by the AI
+            will be in the open image section and the ones which are reviewed by
+            scientists will be in CloseImage section .The scientists(Verifiers) need to vote
+            for the choice ok or not ok with the image reviewed by AI and a Scientist.
           </Typography>
         </div>
         <div>

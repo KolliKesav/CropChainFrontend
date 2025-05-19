@@ -3,7 +3,7 @@
 
 Decentralised Pland Disesase detection and solution verification system.This repo has the front-end code of the project. This is a research project. Technologies include Hardhat, Ipfs, web3 , moralis and Ethereum smart contract development using solidity.This uses PROOF OF AUTHORITY as its consensus mechanism.This is a permissioned chain so the admin aka KvkManager is the who can give access to the chain, who the deployer of the smart contract.
 
-Actors Include KvkManager, Farmers and Scientist. The manager includes the farmers and Scientist to the chain. Farmers upload the images. which are first viewed by the Ai and are then reviewed by the Scientists and at last all the verifiers vote the soluions provided.By this way they come to a decision of correct solution for a given plant diesase.
+Actors Include KvkManager, Farmers and Scientist. The manager includes the farmers and Scientist to the chain. Farmers upload the images, which are first viewed by the Ai and are then reviewed by the Scientists and at last all the verifiers vote to verify the correctness of the solutions provided.By this way they come to a decision of correct solution for a given plant diesase.
 
 # PROJECT ARCHITECTURE
 ![Screenshot from 2024-03-31 12-30-30](https://github.com/Adhitya-Vardhan/CropChain-UI/assets/116478666/3aa45eef-2468-437c-9a37-dd9f2b3e061c)

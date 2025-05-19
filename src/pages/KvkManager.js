@@ -158,7 +158,7 @@ export default function KvkManagaer() {
               <Typography variant="h5" className="mb-6 text-gray-800 text-center">
                 Register New Users
               </Typography>
-              <div className="flex flex-wrap justify-center gap-6">
+              <div className="flex flex-wrap justify-between px-28">
                 {data.map((item, index) => (
                   <UserAddCard key={index} data={item} />
                 ))}

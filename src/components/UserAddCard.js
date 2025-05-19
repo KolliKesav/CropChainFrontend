@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 export function UserAddCard({ data }) {
   return (
-    <Card className="mt-6 w-96  " color="gray" variant="gradient">
+    <Card className="mt-6 w-96 w-full  " color="gray" variant="gradient">
       <CardBody>
         <svg
           xmlns="http://www.w3.org/2000/svg"

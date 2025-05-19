@@ -44,7 +44,7 @@ export function MultiLevelSidebar() {
 
   return (
     <div>
-      <Card className="h-[calc(100vh-0rem)] w-full max-w-[17rem] p-4 pt-24 shadow-xl shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+      <Card className="h-[calc(100vh-0rem)] w-full max-w-[20rem] p-4 pt-24 shadow-xl shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
         {/* <div className="mb-2 flex items-center gap-4 p-4">
         <img
           src="https://docs.material-tailwind.com/img/logo-ct-dark.png"

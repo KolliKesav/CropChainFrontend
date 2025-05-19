@@ -76,7 +76,7 @@ export default function Scientist() {
           
 
           {/* Stats Cards */}
-          <div className="bg-white rounded-xl shadow-md max-w-6xl mx-auto my-10 p-6">
+          <div className="bg-white rounded-xl shadow-md max-w-8xl mx-auto my-10 p-6">
             
             <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
               {statisticsCardsData.map(({ icon, title, footer, ...rest }) => (
@@ -126,7 +126,7 @@ export default function Scientist() {
           </div>
 
           {/* Review Instructions */}
-          <div className="bg-white rounded-xl shadow-md max-w-6xl mx-auto my-10 p-6">
+          <div className="bg-white rounded-xl shadow-md max-w-8xl mx-auto my-10 p-6">
             <div className="text-center mb-6">
               <Typography variant="h2" className="text-3xl font-semibold">
                 Review Images
@@ -159,7 +159,7 @@ export default function Scientist() {
           </div>
 
           {/* Verify Instructions */}
-          <div className="bg-white rounded-xl shadow-md max-w-6xl mx-auto my-10 p-6">
+          <div className="bg-white rounded-xl shadow-md max-w-8xl mx-auto my-10 p-6">
             <div className="text-center mb-6">
               <Typography variant="h2" className="text-3xl font-semibold">
                 Verify Images
@@ -192,7 +192,7 @@ export default function Scientist() {
           </div>
 
           {/* Fetch Images */}
-          <div className="bg-white rounded-xl shadow-md max-w-6xl mx-auto my-10 p-6">
+          <div className="bg-white rounded-xl shadow-md max-w-8xl mx-auto my-10 p-6">
             <div className="text-center mb-6">
               <Typography variant="h2" className="text-3xl font-semibold">
                 Fetch Your Images
