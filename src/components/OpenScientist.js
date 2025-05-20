@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import { Button, Card, Typography, List } from "@material-tailwind/react";
 import console from "console-browserify";
@@ -9,12 +9,13 @@ import Upload from "../utils/Upload.json";
 import Navbar from "./Navbar";
 
 export default function ScientistList() {
-  const [sci, setSci] = useState("");
+  const [sci, setSci] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const {
-    runContractFunction: fetch,
+    runContractFunction: fetchScientists,
     data,
-    isFetching,
+    error,
   } = useWeb3Contract({
     abi: Upload.abi,
     contractAddress: process.env.REACT_APP_CONTRACT,
@@ -22,40 +23,46 @@ export default function ScientistList() {
   });
 
   const fetchScientist = async () => {
-    await fetch();
-    if (isFetching) {
-      console.log("its fetching");
+    setLoading(true);
+    try {
+      const result = await fetchScientists();
+      if (result) {
+        console.log(result);
+        setSci(result);
+      } else {
+        console.log("No data received");
+        setSci([]);
+      }
+    } catch (err) {
+      console.error("Fetch error:", err);
     }
-    if (data) {
-      console.log(data);
-      setSci(data);
-    }
+    setLoading(false);
   };
 
-  const renderScientist = () => {
-    return sci.map((item, i) => (
-      <>
-        <div key={`a-${i}`} className="p-2 flex items-center">
-          <ScientistItem item={item} />
-        </div>
-      </>
+  const renderScientist = () =>
+    sci.map((item, i) => (
+      <div
+      key={`sci-${i}`}
+      className={`p-2 flex items-center opacity-0 animate-fade-in`}
+      style={{ animationDelay: `${i * 100}ms`, animationFillMode: 'forwards' }}
+    >
+        <ScientistItem item={item} />
+      </div>
     ));
-  };
 
   return (
-    <>
     <Layout>
       <Navbar />
       <div className="mt-5px pt-24 overflow-x-hidden">
         <div className="flex justify-center font-semibold">
-          <Typography variant="h1">FETCH SCIENTIST </Typography>
+          <Typography variant="h1">FETCH SCIENTIST</Typography>
         </div>
         <div className="px-10 pt-5 pb-10">
           <Typography variant="paragraph">
-            Here you will get all the scientists who are added to chain and
-            theri data like ID,Address,Images verified , his level etc.. you can
-            click on the read more to get these data about that particualr
-            scientist. WORD OF CAUTION - some times the added chain data needs
+            Here you will get all the scientists who are added to chain and their
+            data like ID, Address, Images verified, his level, etc. You can
+            click on the read more to get these data about that particular
+            scientist. WORD OF CAUTION - sometimes the added chain data needs
             some time to reflect on the website as the transaction needs to be
             verified.
           </Typography>
@@ -66,26 +73,25 @@ export default function ScientistList() {
           onClick={fetchScientist}
           className="mx-4 my-2"
         >
-          {" "}
-          Fetch{" "}
+          Fetch
         </Button>
 
-        {/* <div className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96 mx-auto"> */}
-        <div className="flex h-full overflow-y-auto">
-          <Card className=" mx-auto mt-8 mb-2 w-3/5  rounded-md">
+        <div className="flex h-full overflow-y-hidden">
+          <Card className="mx-auto mt-8 mb-2 w-3/5 rounded-md">
             <List className="my-2 p-0">
-              {isFetching ? (
-                 <p className="col-span-full text-center text-gray-500">Loading...</p>
+              {loading ? (
+                <p className="col-span-full text-center text-gray-500">Loading...</p>
               ) : sci && sci.length > 0 ? (
                 renderScientist()
               ) : (
-                <p className="col-span-full text-center text-gray-500">No scientist fetched yet</p>
+                <p className="col-span-full text-center text-gray-500">
+                  No scientist fetched yet
+                </p>
               )}
             </List>
           </Card>
         </div>
       </div>
     </Layout>
-    </>
   );
 }

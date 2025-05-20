@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import React from "react";
 import { Button, Card, Typography, List } from "@material-tailwind/react";
 import Layout from "./Layout";
@@ -11,16 +11,6 @@ import Navbar from "./Navbar";
 export default function FarmerList() {
   const [far, setFar] = useState("");
 
-  const renderFarmers = () => {
-    return far.map((item, i) => (
-      <>
-        <div key={`a-${i}`} className="p-2 flex items-center">
-          <FarmerItem item={item} />
-        </div>
-      </>
-    ));
-  };
-
   const {
     runContractFunction: fetch,
     data,
@@ -31,17 +21,34 @@ export default function FarmerList() {
     functionName: "get_farmers",
   });
 
-  const fetchFarmer = async () => {
-    await fetch();
-    if (isFetching) {
-      console.log("its fetching");
-    }
+ useEffect(() => {
     if (data) {
-      console.log(data);
+      console.log("Data fetched:", data);
       setFar(data);
+    }
+  }, [data]);
+
+  const fetchFarmer = async () => {
+    try {
+      await fetch();
+    } catch (error) {
+      console.error("Fetch failed:", error);
     }
   };
 
+  const renderFarmers = () =>
+    far.map((item, i) => (
+      <div
+        key={`farmer-${i}`}
+        className="p-2 flex items-center opacity-0 animate-fade-in"
+        style={{
+          animationDelay: `${i * 100}ms`,
+          animationFillMode: "forwards",
+        }}
+      >
+        <FarmerItem item={item} />
+      </div>
+    ));
   return (
     <>
     <Navbar/>
@@ -71,7 +78,7 @@ export default function FarmerList() {
           Fetch{" "}
         </Button>
 
-        <div className="flex h-full overflow-y-auto">
+        <div className="flex h-full overflow-y-hidden">
           <Card className="mx-auto mt-8 mb-2 w-3/5  rounded-md">
             <List className="my-2 p-0">
               {isFetching ? (

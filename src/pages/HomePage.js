@@ -18,7 +18,7 @@ export default function HomePage() {
       <div className="fixed">{role && <MultiLevelSidebar />}</div>
 
       {/* Main content - add ml-64 only if sidebar is shown */}
-      <div><main className={`${role ? "ml-56" : ""}`}>
+      <div><main className={`${role ? "ml-64" : ""}`}>
         <Navbar />
 
         <div id="home">
