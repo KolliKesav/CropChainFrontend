@@ -5,7 +5,7 @@ import { Button, Typography } from "@material-tailwind/react";
 import Upload from "../utils/Upload.json";
 import { useWeb3Contract } from "react-moralis";
 import console from "console-browserify";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Navbar from "./Navbar";
 
 export default function CloseImages() {
@@ -14,7 +14,7 @@ export default function CloseImages() {
   const renderImages = () => {
     return img.map((item, i) => (
       <>
-        <div key={`a-${i}`} className="p-2 md:p-4">
+        <div key={`a-${i}`} className={`opacity-0 animate-fade-in p-2 md:p-4`}>
           <CloseCard item={item} />
         </div>
       </>
@@ -31,15 +31,15 @@ export default function CloseImages() {
     functionName: "get_close_images",
   });
 
-  const fetchFinal = async () => {
-    await fetch();
-    if (isFetching) {
-      console.log("its fetching");
-    }
-    if (data) {
-      console.log(data);
+  useEffect(() => {
+    if (data && Array.isArray(data)) {
+      console.log("Updated data received:", data);
       setImg(data);
     }
+  }, [data]);
+
+  const fetchClose = async () => {
+    await fetch();
   };
 
   return (
@@ -66,7 +66,7 @@ export default function CloseImages() {
           <Button
             fullWidth
             ripple={true}
-            onClick={fetchFinal}
+            onClick={fetchClose}
             className="mx-4 my-2"
           >
             {" "}

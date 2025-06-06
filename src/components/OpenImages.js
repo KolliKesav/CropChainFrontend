@@ -2,7 +2,7 @@ import React from "react";
 import OpenCard from "./OpenCard";
 import { AIreviewed } from "../utils/AIrviewed";
 import Layout from "./Layout";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Upload from "../utils/Upload.json";
 import { useWeb3Contract } from "react-moralis";
 import console from "console-browserify";
@@ -24,22 +24,21 @@ export default function OpenImages() {
     contractAddress: process.env.REACT_APP_CONTRACT,
     functionName: "get_images",
   });
+    useEffect(() => {
+    if (data && Array.isArray(data)) {
+      console.log("Updated data received:", data);
+      setImg(data);
+    }
+  }, [data]);
 
   const fetchOpen = async () => {
     await fetch();
-    if (isFetching) {
-      console.log("its fetching");
-    }
-    if (data) {
-      console.log(data);
-      setImg(data);
-    }
   };
 
   const renderImages = () => {
     return img.map((item, i) => (
       <>
-        <div key={`a-${i}`} className="p-2 md:p-4">
+        <div key={`a-${i}`} className={`opacity-0 animate-fade-in p-2 md:p-4`}>
           <OpenCard item={item} />
         </div>
       </>

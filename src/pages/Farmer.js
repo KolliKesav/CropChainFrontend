@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Layout from "../components/Layout";
 import { Button } from "@material-tailwind/react";
 import UploadImage from "../components/UploadImage";
@@ -14,6 +14,7 @@ import {
   useMoralis,
 } from "react-moralis";
 import FinalCard from "../components/FinalCard";
+import { use } from "react";
 
 export default function Farmer() {
   const [img, setImg] = useState("");
@@ -47,10 +48,20 @@ export default function Farmer() {
 
   const fetchImg = async () => {
     await fetch();
-    if (data) {
+  };
+  useEffect(() => {
+  const fetchData = async () => {
+    if (!meth) return;
+    await fetch();
+  };
+  fetchData();
+}, [meth]);
+
+  useEffect(()=>{
+     if (data&&Array.isArray(data)) {
       setImg(data);
     }
-  };
+  },[data])
 
   return (
     <div className="">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Layout from "./Layout";
 import Upload from "../utils/Upload.json";
 import { useWeb3Contract } from "react-moralis";
@@ -21,21 +21,21 @@ export default function FinalImages() {
     functionName: "get_final_images",
   });
 
-  const fetchOpen = async () => {
-    await fetch();
-    if (isFetching) {
-      console.log("Fetching...");
-    }
-    if (data) {
-      console.log(data);
+  useEffect(() => {
+    if (data && Array.isArray(data)) {
+      console.log("Updated data received:", data);
       setImg(data);
     }
+  }, [data]);
+
+  const fetchFinal = async () => {
+    await fetch();
   };
 
   const renderImages = () => {
      return img.map((item, i) => (
        <>
-         <div key={`a-${i}`} className="p-2 md:p-4">
+         <div key={`a-${i}`}   className={` opacity-0 animate-fade-in p-2 md:p-4`}>
            <FinalCard item={item} />
          </div>
        </>
@@ -62,7 +62,7 @@ export default function FinalImages() {
         </div>
 
         <div className="px-6 pb-4">
-          <Button fullWidth ripple={true} onClick={fetchOpen} className="my-2">
+          <Button fullWidth ripple={true} onClick={fetchFinal} className="my-2">
             Fetch
           </Button>
         </div>
