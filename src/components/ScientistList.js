@@ -171,13 +171,12 @@ export default function ScientistList() {
             {/* Info Card */}
             <Card className="bg-white rounded-xl mt-8 mb-8 shadow-md p-6">
               <Typography variant="paragraph">
-                Kvk Manager also known as the admin of this permissioned Blockchain,
-                he is the only one who can grant users access and make changes to
-                the chain data. He adds users via their Wallet address and Aadhaar.
+                Kvk Manager, also referred to as the admin of this permissioned blockchain, is solely responsible for managing access and modifying chain data.
+He authorizes users by adding their wallet address and Aadhaar number.
               </Typography>
             </Card>
 
-            {/* Fetch Scientist Section */}
+            {/* Fetch Scientist Section
             <Card className="bg-white rounded-xl shadow-md p-6">
               <div className="flex justify-center">
                 <Typography variant="h1">FETCH SCIENTIST</Typography>
@@ -201,7 +200,7 @@ export default function ScientistList() {
                  </Card>
               </List>
                
-              </Card>
+              </Card> */}
           </div>
           <ToastContainer />
         </div>

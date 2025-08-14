@@ -22,9 +22,10 @@ export default function FinalImages() {
   });
 
   useEffect(() => {
-    if (data && Array.isArray(data)) {
+    if (data && typeof data === "string") {
       console.log("Updated data received:", data);
-      setImg(data);
+      const urls = data.split("$$$"); 
+      setImg(urls);
     }
   }, [data]);
 
@@ -46,7 +47,8 @@ export default function FinalImages() {
     <>
       <Navbar />
       <Layout>
-        <div className="flex justify-center pt-24">
+         <div className="bg-gradient-to-br from-blue-50 to-green-50 min-h-screen overflow-x-hidden">
+        <div className=" flex justify-center pt-24">
           <Typography variant="h1" className="pb-5 text-center">
             Fetch The Images
           </Typography>
@@ -54,10 +56,8 @@ export default function FinalImages() {
 
         <div className="px-10 pb-10 text-justify">
           <Typography variant="paragraph" color="blue-gray">
-            The images which are completed being reviewed by AI, scientists, and
-            other reviewers are shown here. <strong>WORK OF CAUTION</strong> –
-            Please trust the solutions where a minimum of 5–6 users have verified
-            the image.
+           The images displayed here have been fully reviewed by the AI, a scientist, and a group of verifiers.
+<strong>⚠️ Work of Caution:</strong> Please place your trust primarily in solutions that have been verified by at least majority of users, ensuring higher accuracy and reliability.
           </Typography>
         </div>
 
@@ -79,6 +79,7 @@ export default function FinalImages() {
               </p>
             )}
           
+        </div>
         </div>
       </Layout>
     </>

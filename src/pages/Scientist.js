@@ -5,8 +5,8 @@ import { Typography, Button, ButtonGroup } from "@material-tailwind/react";
 import { ClockIcon } from "@heroicons/react/24/solid";
 import StatisticsCard from "../components/StatisticsCard";
 import StatisticsChart from "../components/StatisticsChart";
-import { statisticsCardsData } from "../utils/statisticsCardsData";
-import { statisticsChartsData } from "../utils/statisticsChartsData";
+import  StatisticsCardsData  from "../components/StatisticsCardsData";
+import { statisticsChartsData } from "../components/statisticsChartsData";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useUser } from "../context/UserContext";
@@ -15,12 +15,15 @@ import Upload from "../utils/Upload.json";
 import ScientistReviewCard from "../components/ScientistReviewCard";
 import { CardSkeleton } from "../components/CardSkeleton";
 import FinalCard from "../components/FinalCard";
+import { motion, AnimatePresence } from "framer-motion";
+
 
 export default function Scientist() {
   const [meth, setMeth] = useState("");
   const [img, setImg] = useState([]);
   const [loading, setLoading] = useState(false);
   const { walletAddress } = useUser();
+  
 
   const { runContractFunction: fetch, data } = useWeb3Contract({
     abi: Upload.abi,
@@ -28,6 +31,8 @@ export default function Scientist() {
     functionName: "display_scientist",
     params: { _user: walletAddress },
   });
+
+
 
 useEffect(() => {
   const fetchData = async () => {
@@ -38,35 +43,50 @@ useEffect(() => {
   fetchData();
 }, [meth]);
 
-// When 'data' changes, update image array
 useEffect(() => {
   if (!data) return;
 
+  let arr = [];
+
   if (meth === "verified") {
-    setImg(data.image_VR || []);
+    arr = (data.image_VR || "").split("$$$").filter((s) => s.trim() !== "");
   } else if (meth === "reviewed") {
-    setImg(data.image_rvd || []);
+    arr = (data.image_rvd || "").split("$$$").filter((s) => s.trim() !== "");
+  } else if (meth === "accepted") {
+    arr = (data.review_accepted || "").split("$$$").filter((s) => s.trim() !== "");
+  } else if(meth === "rejected") {
+    arr = (data.review_rejected || "").split("$$$").filter((s) => s.trim() !== "");
   }
+
+  setImg(arr);
   setLoading(false);
 }, [data]);
 
-  const renderImages = () => {
-    if (meth === "verified") {
-      return img.map((item, i) => (
-        <div key={`img-${i}`} className={`opacity-0 animate-fade-in p-2 md:p-4`}>
-          <FinalCard item={item} />
-        </div>
-      ));
-    } else if (meth === "reviewed") {
-      return img.map((item, i) => (
-        <div key={`img-${i}`}className={`opacity-0 animate-fade-in p-2 md:p-4`}>
-          <ScientistReviewCard item={item} />
-        </div>
-      ));
-    } else {
-      return null;
-    }
-  };
+ const renderImages = () => {
+  if (!meth || img.length === 0) return null;
+
+  return (
+    <AnimatePresence mode="wait">
+      {img.map((item, i) => (
+        <motion.div
+          key={`${meth}-${i}`}
+          className="p-2 md:p-4"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.2 }}
+        >
+          { meth === "accepted" ? (
+            <FinalCard item={item} />
+          ) : (
+            <ScientistReviewCard item={item} />
+          )}
+        </motion.div>
+      ))}
+    </AnimatePresence>
+  );
+};
+
 
   return (
     <div>
@@ -77,32 +97,15 @@ useEffect(() => {
             walletAddress ? "px-6 md:px-8" : "px-4"
           } bg-gradient-to-br from-blue-50 to-green-50`}
         >
-          <div className="bg-gradient-to-r from-green-100 via-blue-100 to-teal-100 rounded-xl p-4 shadow-md mb-6">
+          <div className="bg-gradient-to-r from-green-100 via-blue-100 to-teal-100 rounded-xl p-3 shadow-md mb-6">
             <h1 className="text-gray-700 text-3xl font-extrabold tracking-wide uppercase text-center">
-              🚀 Dashboard
+               Dashboard
             </h1>
           </div>
 
           {/* Stats Cards */}
           <div className="bg-white rounded-xl shadow-md max-w-8xl mx-auto my-10 p-6">
-            <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
-              {statisticsCardsData.map(({ icon, title, footer, ...rest }) => (
-                <StatisticsCard
-                  key={title}
-                  {...rest}
-                  title={title}
-                  icon={React.createElement(icon, {
-                    className: "w-6 h-6 text-white",
-                  })}
-                  footer={
-                    <Typography className="font-normal text-blue-gray-600">
-                      <strong className={footer.color}>{footer.value}</strong>
-                      &nbsp;{footer.label}
-                    </Typography>
-                  }
-                />
-              ))}
-            </div>
+            <StatisticsCardsData /> 
 
             <div className="mb-6 grid grid-cols-1 gap-y-12 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
               {statisticsChartsData.map((props) => (
@@ -139,9 +142,9 @@ useEffect(() => {
               </Typography>
             </div>
             <Typography variant="paragraph" color="blue-gray">
-              The AI proposes a solution which you need to verify. You earn
-              authority points for each image reviewed. If your review is later
-              found incorrect, points will be deducted.
+           Provide Your Expert Review : As a scientist, you're invited to submit your own review for each image analyzed by the AI.
+You'll earn authority points for every review you complete. However, if your review is later found to be incorrect, a deduction in points may apply.
+Consistently accurate reviews help maintain your authority level within the platform.
             </Typography>
             <div className="flex justify-center pt-4 pb-6">
               <Link to="../openimages">
@@ -170,13 +173,13 @@ useEffect(() => {
           <div className="bg-white rounded-xl shadow-md max-w-8xl mx-auto my-10 p-6">
             <div className="text-center mb-6">
               <Typography variant="h2" className="text-3xl font-semibold">
-                Verify Images
+                Verify Reviews
               </Typography>
             </div>
             <Typography variant="paragraph" color="blue-gray">
-              After review, images are verified by a group. Only if 5 verifiers
-              approve, it gets added to the final section. Verifiers also earn
-              authority points.
+              Verification Process :
+After submitting a review, the image is forwarded to a group of verifiers. It will be added to the final section only if majority of verifiers approve it.
+Verifiers also earn authority points for each accurate verification they complete.
             </Typography>
             <div className="flex justify-center pt-4 pb-6">
               <Link to="../closeimages">
@@ -221,6 +224,10 @@ useEffect(() => {
               <ButtonGroup fullWidth variant="outlined">
                 <Button onClick={() => setMeth("verified")}>Verified</Button>
                 <Button onClick={() => setMeth("reviewed")}>Reviewed</Button>
+                <Button onClick={() => setMeth("accepted")}>Accepted Reviews</Button>
+                <Button onClick={() => setMeth("rejected")}>Rejected Reviews</Button>
+                
+
               </ButtonGroup>
             </div>
 
@@ -248,3 +255,4 @@ useEffect(() => {
     </div>
   );
 }
+

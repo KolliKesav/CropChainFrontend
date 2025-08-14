@@ -18,11 +18,19 @@ import "react-toastify/dist/ReactToastify.css";
 import console from "console-browserify";
 import Profile from "./pages/profile";
 import { UserProvider } from "./context/UserContext";
+import { useUser } from "./context/UserContext";
 import AuthRedirect from "./components/AuthRedirect";
 import ScrollToTop from "./components/ScrollToTop";
+import WalletListener from "./context/WalletListener";
+
+
 
 
 function App() {
+  const { walletAddress, logout } = useUser();
+  
+
+
   // useEffect(() => {
   //   const checkMetaMask = () => {
   //     if (typeof window.ethereum === "undefined") {
@@ -84,12 +92,25 @@ function App() {
     checkMetaMask();
   }, []);
 
+  
+
+
   return (
     <div className="App">
       <MoralisProvider initializeOnMount={false}>
         <UserProvider>
+          <ToastContainer
+               position="top-right"
+               autoClose={3000}
+               hideProgressBar={false}
+               closeOnClick
+               pauseOnHover
+               draggable
+               theme="colored"
+             />
         <Router>
            <ScrollToTop />
+           <WalletListener />
           <Routes>
             <Route path="/home" element={<HomePage />} />
             
@@ -109,8 +130,9 @@ function App() {
 
           </Routes>
         </Router>
+        
          </UserProvider>
-        <ToastContainer />
+       
       </MoralisProvider>
     </div>
   );

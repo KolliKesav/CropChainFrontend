@@ -2,10 +2,9 @@ import React from "react";
 import Layout from "../components/Layout";
 import { Typography, Button, Card } from "@material-tailwind/react";
 import { ClockIcon } from "@heroicons/react/24/solid";
-import StatisticsCard from "../components/StatisticsCard";
 import StatisticsChart from "../components/StatisticsChart";
-import { statisticsCardsData } from "../utils/statisticsCardsData";
-import { statisticsChartsData } from "../utils/statisticsChartsData";
+import  StatisticsCardsData  from "../components/StatisticsCardsData";
+import  statisticsChartsData  from "../components/statisticsChartsData";
 import { UserAddCard } from "../components/UserAddCard";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -47,25 +46,7 @@ export default function KvkManagaer() {
           {/* Statistics Cards */}
           <div className="px-8 py-10">
             <Card className="bg-white p-6 shadow-md">
-              <div className="grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
-                {statisticsCardsData.map(({ icon, title, footer, ...rest }) => (
-                  <StatisticsCard
-                    key={title}
-                    {...rest}
-                    title={title}
-                    icon={React.createElement(icon, {
-                      className: "w-6 h-6 text-white",
-                    })}
-                    footer={
-                      <Typography className="font-normal text-blue-gray-600">
-                        <strong className={footer.color}>{footer.value}</strong>
-                        &nbsp;{footer.label}
-                      </Typography>
-                    }
-                  />
-                ))}
-              </div>
-           
+               <StatisticsCardsData />
 
           {/* Statistics Charts */}
           <div className="px-4 pb-10 py-10">

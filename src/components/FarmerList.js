@@ -177,7 +177,7 @@ export default function FarmerList() {
               </Typography>
             </Card>
 
-            {/* Fetch Farmer Section */}
+            {/* Fetch Farmer Section
             <Card className="bg-white rounded-xl shadow-md p-6">
               <div className="flex justify-center">
                 <Typography variant="h1">FETCH FARMERS</Typography>
@@ -195,7 +195,7 @@ export default function FarmerList() {
                 Fetch
               </Button>
 
-              {/* Farmer List Section */}
+              Farmer List Section
               <Card className="bg-white rounded-xl shadow-md p-6">
                 <List className="my-2 p-0">
                   {isFetching ? (
@@ -207,7 +207,7 @@ export default function FarmerList() {
                   )}
                 </List>
               </Card>
-            </Card>
+            </Card> */}
           </div>
 
           <ToastContainer />

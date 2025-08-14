@@ -15,23 +15,15 @@ import {
 } from "react-moralis";
 import FinalCard from "../components/FinalCard";
 import { use } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import OpenCard from "../components/OpenCard";
 
 export default function Farmer() {
   const [img, setImg] = useState("");
   const { account } = useMoralis();
   const [meth, setMeth] = useState("");
 
-  const renderImages = () => {
-    return img.map((item, i) => (
-      <div key={`img-${i}`} className="p-2 md:p-4">
-        {meth === "display_final" ? (
-          <FinalCard item={item} />
-        ) : (
-          <DisplayCard item={item} />
-        )}
-      </div>
-    ));
-  };
+  
 
   const {
     runContractFunction: fetch,
@@ -72,7 +64,7 @@ export default function Farmer() {
         <section className=" py-5 px-4 md:px-14 pt-20 bg-gradient-to-br from-blue-50 to-green-50" >
         <div className="bg-gradient-to-r from-green-100 via-blue-100 to-teal-100 rounded-xl p-4 shadow-md mb-6">
   <h1 className="text-gray-700 text-3xl font-extrabold tracking-wide uppercase text-center">
-    🚀 Dashboard
+     Dashboard
   </h1>
 </div>
 
@@ -175,8 +167,26 @@ export default function Farmer() {
             <div className="min-h-[300px]">
               {img && img.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {renderImages()}
-                </div>
+  <AnimatePresence mode="wait">
+    {img.map((item, i) => (
+      <motion.div
+        key={`${meth}-${i}`}
+        className="p-2 md:p-4"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ duration: 0.2 }}
+      >
+        {meth === "display_final" ? (
+          <FinalCard item={item} />
+        ) : (
+          <OpenCard item={item} />
+        )}
+      </motion.div>
+    ))}
+  </AnimatePresence>
+</div>
+
               ) : (
                 <div className="text-center">
                   <Typography>No images fetched yet</Typography>

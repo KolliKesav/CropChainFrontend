@@ -3,13 +3,13 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
+  Button,
   Typography,
 } from "@material-tailwind/react";
 import PropTypes from "prop-types";
-
-export function StatisticsCard({ color, icon, title, value, footer }) {
+export function StatisticsCard({ color, icon, title, value, footer, onFetch }) {
   return (
-    <Card className="border border-blue-gray-100 shadow-sm">
+    <Card className="border border-blue-gray-100 z-0 shadow-sm">
       <CardHeader
         variant="gradient"
         color={color}
@@ -19,14 +19,32 @@ export function StatisticsCard({ color, icon, title, value, footer }) {
       >
         {icon}
       </CardHeader>
-      <CardBody className="p-4 text-right">
-        <Typography variant="small" className="font-normal text-blue-gray-600">
-          {title}
-        </Typography>
-        <Typography variant="h4" color="blue-gray">
-          {value}
-        </Typography>
-      </CardBody>
+     <CardBody className="p-4 text-right">
+  {/* Title */}
+  <Typography as="p" className="text-xs font-medium text-blue-gray-600 mb-2">
+    {title}
+  </Typography>
+
+  {/* Value or Fetch button */}
+  {value ? (
+    <Typography as="p" className=" font-semibold text-blue-gray-800">
+      {value}
+    </Typography>
+  ) : (
+    <div className="flex justify-end">
+      <Button
+        size="sm"
+        variant="outlined"
+        color="blue-gray"
+        className="text-xs py-1 px-2"
+        onClick={onFetch}
+      >
+        Fetch
+      </Button>
+    </div>
+  )}
+</CardBody>
+
       {footer && (
         <CardFooter className="border-t border-blue-gray-50 p-4">
           {footer}
@@ -39,7 +57,9 @@ export function StatisticsCard({ color, icon, title, value, footer }) {
 StatisticsCard.defaultProps = {
   color: "blue",
   footer: null,
+  onFetch: () => {}, // default to no-op
 };
+
 
 StatisticsCard.propTypes = {
   color: PropTypes.oneOf([

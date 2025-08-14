@@ -32,9 +32,10 @@ export function UserAddCard({ data }) {
       </CardBody>
       <CardFooter className="pt-0">
         
-          <Button size="sm" color="white" className="flex items-center gap-2">
-            <Link to={data.link}> {data.user} </Link>
-
+          
+            <Link to={data.link}> 
+<Button size="sm" color="white" className="flex items-center gap-2">
+   {data.user}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -49,7 +50,9 @@ export function UserAddCard({ data }) {
                 d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
               />
             </svg>
+           
           </Button>
+           </Link>
        
       </CardFooter>
     </Card>

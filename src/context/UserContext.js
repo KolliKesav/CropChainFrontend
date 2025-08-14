@@ -6,6 +6,8 @@ export const UserProvider = ({ children }) => {
   const [walletAddress, setWalletAddress] = useState(null);
   const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [hydrated, setHydrated] = useState(false);
+
 
   // Load persisted data from localStorage
   useEffect(() => {
@@ -14,6 +16,7 @@ export const UserProvider = ({ children }) => {
 
   if (storedWallet) setWalletAddress(storedWallet);
   if (storedRole) setRole(storedRole);
+  setHydrated(true);
 
   
   
@@ -52,6 +55,7 @@ export const UserProvider = ({ children }) => {
     setRole(null);
     localStorage.removeItem("walletAddress");
     localStorage.removeItem("role");
+   
   };
 
   return (
@@ -60,6 +64,7 @@ export const UserProvider = ({ children }) => {
         walletAddress,
         role,
         loading,
+        hydrated,
         login,
         logout,
       }}
